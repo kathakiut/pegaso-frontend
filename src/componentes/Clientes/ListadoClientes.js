@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Estados from "../../enums/Estados";
-import ClientesServicios from "../../servicios/ClientesServicios";
+import ClientesServicios from "../../servicios/ClienteServicios";
 
 const ListadoClientes = () => {
 
@@ -59,10 +59,11 @@ const ListadoClientes = () => {
             <table className="table table-sm"> 
                 <thead>
                     <tr>
-                        <th>Nombres completos</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
                         <th>Documento</th>
-                        <th>Dirección</th>
                         <th>Telefono</th>
+                        <th>E-mail</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -82,10 +83,11 @@ const ListadoClientes = () => {
                         : 
                         listadoClientes.map((cliente) => (
                             <tr>
-                                <td>{ cliente.nombres +" "+cliente.apellidos}</td>
+                                <td>{ cliente.nombre}</td>
+                                <td>{ cliente.apellido }</td>
                                 <td>{ cliente.documento }</td>
-                                <td>{ cliente.direccion }</td>
                                 <td>{ cliente.telefono }</td>
+                                <td>{ cliente.correo }</td>
                                 <td>
                                     <button>Editar</button>
                                     <button>Eliminar</button>
