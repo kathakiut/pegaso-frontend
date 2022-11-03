@@ -1,7 +1,8 @@
 const Footer = () => {
     return (
-        <div class="container">
-            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="px-3 py-3 text-bg-dark" >
+                <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-6 border-top">
                 <div class="col-md-4 d-flex align-items-center">
                     <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
                         <img src="https://gitlab.com/medinakaterin/pegaso-u23-09/-/raw/main/Imagenes/pegaso-icono.png" width="50" height="50" fill="currentColor" class="bi d-block mx-auto mb-1" viewBox="0 0 16 16" alt="..."></img>
@@ -21,7 +22,7 @@ const Footer = () => {
                     </svg></a></li>
                 </ul>
             </footer>
-        </div>
+        </div></div>
     );
 }
 
