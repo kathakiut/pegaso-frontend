@@ -1,69 +1,177 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import ClientesServicios from "../../servicios/ClienteServicios";
+
 const Registro = () => {
+    const { id } = useParams();
+    const navigateTo = useNavigate();
+
+    const [ nombres, setNombres ] = useState("");
+    const [ apellidos, setApellidos ] = useState("");
+    const [ documento, setDocumento ] = useState("");
+    const [ telefono, setTelefono ] = useState("");
+    const [ correo, setCorreo ] = useState("");
+    const [ passw, setPassw ] = useState("");
+    const [ confirm, setConfirm ] = useState("");
+    const [ mensaje, setMensaje ] = useState("");
+    const [ titulo, setTitulo ] = useState("");
+
+    const guardarCliente = async (event) => {
+        event.preventDefault();
+
+        if (passw === confirm) {
+            try {
+                const cliente = {
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    documento: documento,
+                    telefono: telefono,
+                    correo: correo,
+                    passw: passw
+                }
+                console.log(cliente);
+                if (id == null) {
+                    await ClientesServicios.guardarCliente(cliente);
+                    navigateTo("/");
+                }
+                else {
+                    await ClientesServicios.modificarCliente(id, cliente);
+                    navigateTo("/Clientes");
+                }
+            } catch (error) {
+                setMensaje("Ocurrió un error");
+            }
+        }
+        else {
+            setMensaje("Las contraseñas no coinciden");
+        }
+    }
+
+    const cargarCliente = async () => {
+        try {
+            if (id != null) {
+                const respuesta = await ClientesServicios.buscarCliente(id);
+                if (respuesta.data != null) {
+                    console.log(respuesta.data);
+                    setNombres(respuesta.data.nombres);
+                    setApellidos(respuesta.data.apellidos);
+                    setDocumento(respuesta.data.documento);
+                    setTelefono(respuesta.data.telefono);
+                    setCorreo(respuesta.data.correo);
+                    setPassw(respuesta.data.passw);
+                    setConfirm(respuesta.data.passw);
+                }
+                setTitulo("Edición");
+            }
+            else {
+                setTitulo("Registro");
+            }
+        } catch (error) {
+            console.log("Ocurrió un error");
+        }
+    }
+
+    const cancelar = () => {
+        if (id != null) {
+            navigateTo("/Clientes");
+        }
+        else {
+            navigateTo("/");
+        }
+    }
+
+    useEffect(()=> {
+        cargarCliente();
+     }, [])
+
+    const cambiarNombres = (event) => {
+        setNombres(event.target.value);
+    }
+
+    const cambiarApellidos = (event) => {
+        setApellidos(event.target.value);
+    }
+
+    const cambiarDocumento = (event) => {
+        setDocumento(event.target.value);
+    }
+
+    const cambiarTelefono = (event) => {
+        setTelefono(event.target.value);
+    }
+
+    const cambiarCorreo = (event) => {
+        setCorreo(event.target.value);
+    }
+
+    const cambiarPassw = (event) => {
+        setPassw(event.target.value);
+    }
+
+    const cambiarConfirm = (event) => {
+        setConfirm(event.target.value);
+    }
     return (
         <body>
             <body background="https://img.freepik.com/vector-gratis/fondo-tinta-alcohol-dorado-pintura-arte-fluido-abstracto_25819-752.jpg?w=1380&t=st=1667409718~exp=1667410318~hmac=f009fb6ef3e87f66d53fc8fd9bc4898f00d01443995f0eff6625d6905c248ce2">
-                <div class="container text-start ">
+                <div className="container text-start ">
 
 
-                    <div class="row g-lg-1 py-5">
-                        <div class="col-lg-5 text-start">
-                            <h1 class="display-6 fw-bold ">Empieza a usar Pegaso</h1>
-                            <p class="col-lg-10 fs-4">
+                    <div className="row g-lg-1 py-5">
+                        <div className="col-lg-5 text-start">
+                            <h1 className="display-6 fw-bold ">Empieza a usar Pegaso</h1>
+                            <p className="col-lg-10 fs-4">
                                 Empieza a usar hoy mismo nuestra suite completa de herramientas gratuitas, a las que siempre tendrás acceso, o solicita una demostración de todos nuestros productos prémium.
                             </p>
                         </div>
 
-                        <div class="col">
-                            <body class="p-4 p-md-5 rounded-5 shadow bg-dark text-white opacity-100">
-                                <div class="col text-center fw-bold fs-3 my-0 mb-3">Registrate gratis
+                        <div className="col">
+                            <body className="p-4 p-md-5 rounded-5 shadow bg-dark text-white opacity-100">
+                            <h3>{titulo} de clientes</h3>
+                                <div className="col text-center fw-bold fs-3 my-0 mb-3">Registrate gratis
 
                                 </div>
-                                <div class="row">
+                                <div className="row">
                                     <div className="col-md-6">
-                                        <label htmlFor="nombre">Nombres *</label>
-                                        <input className="form-control g-1" type="text" name="nombre" id="nombre" required />
+                                        <label htmlFor="nombres">Nombres *</label>
+                                        <input className="form-control g-1" type="text" onChange={cambiarNombres} value={nombres} name="nombres" id="nombres" required/>
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="apellido">Apellidos *</label>
-                                        <input className="form-control g-1" type="text" name="apellido" id="apellido" required />
+                                        <label htmlFor="apellidos">Apellidos *</label>
+                                        <input className="form-control g-1" type="text" onChange={cambiarApellidos}  value={apellidos} name="apellidos" id="apellidos" required />
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="col">
-                                        <select class="form-select my-3" type="text" name="tipoDoc" id="tipoDoc" required>
-                                            <option selected>Tipo de Documento *</option>
-                                            <option value="1">C.C.</option>
-                                            <option value="2">NIT.</option>
-                                            <option value="3">C.E.</option>
-                                            <option value="3">Pasaporte</option>
-                                        </select>
+                                <div className="col">
+                                    <div className="col">
+                                       
                                         <label htmlFor="documento">Ingrese documento *</label>
-                                        <input type="text" class="form-control my-3" name="documento" id="documento" required></input>
+                                        <input className="form-control my-3" type="number" onChange={cambiarDocumento} readOnly = {id!=null ? true : false } value={documento} name="documento" id="documento" required/>
                                     </div>
 
                                 </div>
                                 <form className="row g-3">
                                     <div className="col-md-6 my-3">
                                         <label for="inputEmail" className="form-label">Email</label>
-                                        <input className="form-control" type="email" name="correo" id="correo" required/>
+                                        <input className="form-control" type="email" onChange={cambiarCorreo} value={correo} name="correo" id="correo" required/>
                                     </div>
                                     <div className="col-md-6">
                                         <label for="tel" className="form-label">Celular</label>
-                                        <input type="tel" className="form-control" name="telefono" id="telefono" required/>
+                                        <input type="tel" className="form-control" onChange={cambiarTelefono}  value={telefono} name="telefono" id="telefono" required/>
                                     </div>
                                     <div className="col-md-6">
                                         <label for="inputPassword" className="form-label">Contraseña</label>
-                                        <input type="password" className="form-control" id="password" required/>
+                                        <input type="password" className="form-control" onChange={cambiarPassw} value={passw}  id="password" required/>
                                     </div>
                                     <div className="col-md-6 my-3">
                                         <label for="inputPassword" className="form-label">Confirmar Contraseña</label>
-                                        <input type="password" className="form-control" id="password" required/>
+                                        <input type="password" className="form-control" onChange={cambiarConfirm} value={confirm} id="password" required/>
                                     </div>
 
 
                                     <div className="col-12">
-                                        <button type="submit" className="btn-warning btn btn-outline-white me-4" >Registrarse</button>
-                                        <a href="/Registro" className="btn btn-secondary">Cancelar</a>
+                                        <button type="submit" onClick={guardarCliente} className="btn-warning btn btn-outline-white me-4" >Registrarse</button>
+                                        <a href="/Registro" onClick={cancelar}  className="btn btn-secondary">Cancelar</a>
+                                        <div id="mensaje">{mensaje}</div>
                                     </div>
                                     
                                 </form></body>
