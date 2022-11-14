@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ClientesServicios from "../../servicios/ClientesServicios";
+import EstadosLogin from '../../enums/EstadoLogin';
 
 const ClientesRegistro = () => {
     const { id } = useParams();
@@ -15,8 +16,26 @@ const ClientesRegistro = () => {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [mensaje, setMensaje] = useState("");
+    const [titulo, setTitulo] = useState("");
+
+    const revisarSesion = () => {
+        if (sessionStorage.getItem("estadoLogin") != null) {
+            const sesionUsuario = {
+                id: sessionStorage.getItem("id"),
+                nombres: sessionStorage.getItem("nombres"),
+                EstadoLogin: parseInt(sessionStorage.getItem("estadoLogin"))
+            }
+            console.log(sesionUsuario);
+            console.log(usuario);
+            setUsuario(sesionUsuario);
+        } else {
+            setUsuario({ nombres: "", estadoLogin: EstadosLogin.NO_LOGIN });
+        }
+    }
+    console.log(usuario);
 
     const guardarCliente = async (event) => {
+
         event.preventDefault();
 
         if (password === confirm) {
@@ -27,32 +46,27 @@ const ClientesRegistro = () => {
                     documento: documento,
                     telefono: telefono,
                     correo: correo,
-                    usuario:usuario,
+                    usuario: usuario,
                     password: password
                 }
                 console.log(cliente);
-                if (id == null) {
-                    await ClientesServicios.guardarCliente(cliente);
-                    navigateTo("/");
-                }
-                else {
-                    await ClientesServicios.modificarCliente(id, cliente);
-                    navigateTo("/Clientes");
-                }
+                await ClientesServicios.guardarCliente(cliente);
+                navigateTo("/");
             } catch (error) {
-                setMensaje("Ocurrió un error");
+                setMensaje("Ocurrió un error " + error);
             }
-        }
-        else {
+        } else {
             setMensaje("Las contraseñas no coinciden");
         }
     }
 
-    const cargarClientes = async() => {
-        if (id!=null) {
-            try {
-                const respuesta = await ClientesServicios.cargarClientes(id);
+    const cargarCliente = async () => {
+
+        try {
+            if (id != null) {
+                const respuesta = await ClientesServicios.buscarClientes(id);
                 if (respuesta.data != null) {
+                    console.log(respuesta.data);
                     setNombres(respuesta.data.nombres);
                     setApellidos(respuesta.data.apellidos);
                     setDocumento(respuesta.data.documento);
@@ -63,10 +77,16 @@ const ClientesRegistro = () => {
                     setConfirm(respuesta.data.password);
 
                 }
-            } catch (error) {
-                console.log(error);
+                setTitulo("Edición");
             }
+            else {
+                setTitulo("Registro");
+            }
+
+        } catch (error) {
+            console.log(error);
         }
+
     }
 
     const cancelar = () => {
@@ -78,9 +98,10 @@ const ClientesRegistro = () => {
         }
     }
 
-    useEffect (() => {
-        cargarClientes();
-    }, [])
+    useEffect(() => {
+        revisarSesion();
+        cargarCliente();
+      }, []);
 
 
     const cambiarNombres = (event) => {
@@ -114,6 +135,7 @@ const ClientesRegistro = () => {
     const cambiarConfirm = (event) => {
         setConfirm(event.target.value);
     }
+
     return (
         <body>
             <body background="https://img.freepik.com/vector-gratis/fondo-tinta-alcohol-dorado-pintura-arte-fluido-abstracto_25819-752.jpg?w=1380&t=st=1667409718~exp=1667410318~hmac=f009fb6ef3e87f66d53fc8fd9bc4898f00d01443995f0eff6625d6905c248ce2">
@@ -130,45 +152,45 @@ const ClientesRegistro = () => {
 
                         <div className="col">
                             <body className="p-4 p-md-5 rounded-5 shadow bg-dark text-white opacity-100">
-                                <div className="col text-center fw-bold fs-3 my-0 mb-3">Registro de clientes</div>
+                                <div className="col text-center fw-bold fs-3 my-0 mb-3">{titulo} de clientes</div>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <label htmlFor="nombre">Nombres *</label>
+                                        <label className="form-control-sm" htmlFor="nombres">Nombres*</label>
                                         <input className="form-control g-1" type="text" onChange={cambiarNombres} value={nombres} name="nombres" id="nombres" required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="apellido">Apellidos *</label>
+                                        <label className="form-control-sm" htmlFor="apellidos">Apellidos *</label>
                                         <input className="form-control g-1" type="text" onChange={cambiarApellidos} value={apellidos} name="apellidos" id="apellidos" required />
                                     </div>
                                 </div>
-                                <form className="row g-3">
+                                <form className="row">
                                     <div className="col-md-6 my-4">
 
-                                        <label htmlFor="documento">Ingrese documento *</label>
-                                        <input className="form-control" type="document" onChange={cambiarDocumento} readOnly={id != null ? true : false} value={documento} name="documento" id="documento" required />
+                                        <label className="form-control-sm" htmlFor="documento">Ingrese documento*</label>
+                                        <input className="form-control g-1" type="documento" onChange={cambiarDocumento} readOnly={id != null ? true : false} value={documento} name="documento" id="documento" required />
                                     </div>
                                     <div className="col-md-6 my-4">
-                                        <label for="inputEmail" className="form-label">Email</label>
+                                        <label for="inputEmail" className="form-control-sm">Email</label>
                                         <input className="form-control" type="email" onChange={cambiarCorreo} value={correo} name="correo" id="correo" required />
                                     </div>
 
                                 </form>
                                 <form className="row g-3">
                                     <div className="col-md-6 my-3">
-                                        <label for="inputUser" className="form-label">Usuario</label>
+                                        <label for="inputUser" className="form-control-sm">Usuario</label>
                                         <input className="form-control" type="usuario" onChange={cambiarUsuario} value={usuario} name="usuario" id="usuario" required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="tel" className="form-label">Celular</label>
-                                        <input type="tel" className="form-control" onChange={cambiarTelefono} value={telefono} name="telefono" id="telefono" required />
+                                        <label for="celular" className="form-control-sm">Celular</label>
+                                        <input type="celular" className="form-control" onChange={cambiarTelefono} value={telefono} name="celular" id="celular" required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="inputPassword" className="form-label">Contraseña</label>
-                                        <input type="password" className="form-control" onChange={cambiarPassword} value={password} id="password" required />
+                                        <label for="inputPassword" className="form-control-sm">Contraseña</label>
+                                        <input type="password" className="form-control" onChange={cambiarPassword} value={password} name="password" id="password" required />
                                     </div>
                                     <div className="col-md-6 my-3">
-                                        <label for="inputPassword" className="form-label">Confirmar Contraseña</label>
-                                        <input type="password" className="form-control" onChange={cambiarConfirm} value={confirm} id="password" required />
+                                        <label for="inputPassword" className="form-control-sm">Confirmar Contraseña</label>
+                                        <input type="password" className="form-control" onChange={cambiarConfirm} value={confirm} name="password" id="password" required />
                                     </div>
 
 
@@ -179,7 +201,11 @@ const ClientesRegistro = () => {
                                     </div>
 
                                 </form></body>
-                        </div></div></div></body></body>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </body>
 
 
     );

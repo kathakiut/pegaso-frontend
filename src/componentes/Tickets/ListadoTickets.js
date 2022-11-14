@@ -70,7 +70,7 @@ const ListadoTickets = () => {
     return (
         <div className="container">
             <h3 className="mt-3">Lista de Tickets
-                <a className="btn btn-sm btn-primary mx-3 btn-warning" href="/Clientes/Registro"><i className="bi bi-plus-square" /> Nuevo Ticket</a></h3>
+                <a className="btn btn-sm btn-primary mx-3 btn-warning" href="/tickets/crear"><i className="bi bi-plus-square" /> Nuevo Ticket</a></h3>
             <form action="">
                 <input type="text" value={criterio} onChange={cambiarCriterio} id="criterio" name="criterio" />
                 <button id="buscar" name="buscar" onClick={buscarTickets} type="editar" className="btn btn-dark mx-3"> Buscar</button>
@@ -107,7 +107,7 @@ const ListadoTickets = () => {
                                         <td>
                                             <div className="text-end">
                                                 <a href={"/Tickets/Crear/" + ticket._id} type="editar" className="btn btn-warning me-2"><i className="bi bi-pencil" /> Editar</a>
-                                                <button onClick={() => { confirmarBorrado(ticket._id, ticket.fecha) }} className="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrado"><i className="bi bi-trash" /> Eliminar</button>
+                                                <button onClick={() => { confirmarBorrado(ticket._id, ticket.fecha) }} className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrado"><i className="bi bi-trash" /> Eliminar</button>
                                             </div>
                                         </td>
                                     </tr>

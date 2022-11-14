@@ -1,10 +1,16 @@
 import axios from "axios";
 
-const LoginServicios = {}
-const URL = "http://localhost:8080/api/login/";
-    
-LoginServicios.login = (credenciales) => {
-    return axios.post(URL, credenciales);
+
+const LoginServicios = {};
+const URLCliente =  "/clientes/login";
+const URLPersonal =  "/personal/login"
+
+LoginServicios.clienteLogin = (credenciales) => {
+    return axios.post(URLCliente, credenciales);
+}
+
+LoginServicios.personalLogin = (credencialesPersonal) => {
+    return axios.post(URLPersonal, credencialesPersonal);
 }
 
 export default LoginServicios;

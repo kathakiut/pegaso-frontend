@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react'
 import Estados from "../../enums/Estados";
 import ClientesServicios from "../../servicios/ClientesServicios";
 
@@ -11,22 +11,22 @@ const ListadoClientes = () => {
     const [nombreBorrar, setNombreBorrar] = useState("");
 
 
-    const cargarClientes = async () => {
-        try {
-            const respuesta = await ClientesServicios.listarClientes();
-            console.log(respuesta.data);
-
-            if (respuesta.data.length > 0) {
-                setListadoClientes(respuesta.data);
-                setEstado(Estados.OK);
-            }
-            else {
-                setEstado(Estados.VACIO);
-            }
-        } catch (error) {
-            setEstado(Estados.ERROR)
-        }
-    }
+	const cargarClientes = async () => {
+		setEstado(Estados.CARGANDO);
+		try {
+			const respuesta = await ClientesServicios.listarClientes();
+			if (respuesta.data.length === 0) {
+				setEstado(Estados.VACIO);
+			}
+			else {
+				setListadoClientes(respuesta.data);
+				setEstado(Estados.OK)
+			}
+		} catch (error) {
+			setEstado(Estados.ERROR);
+			console.log(error);
+		}
+	}
 
     const buscarClientes = async (event) => {
         event.preventDefault();
@@ -44,8 +44,22 @@ const ListadoClientes = () => {
             setEstado(Estados.ERROR);
         }
     }
+    const confirmarBorrado = (id, nombres) => {
+        setIdBorrar(id);
+        setNombreBorrar(nombres);
+    }
+    const borrarCliente = async () => {
+        try {
+            const respuesta = await ClientesServicios.borrarCliente(idBorrar);
+            cargarClientes();
+        } catch (error) {
+            console.log(error);
 
-    useEffect (() => {
+        }
+    }
+
+
+    useEffect(() => {
         cargarClientes();
     }, [])
 
@@ -53,19 +67,6 @@ const ListadoClientes = () => {
         setCriterio(event.target.value);
     }
 
-    const confirmarBorrado = (id, nombre) => {
-        setIdBorrar(id);
-        setNombreBorrar(nombre);
-    }
-
-    const borrarCliente = async () => {
-        try {
-            await ClientesServicios.borrarCliente(idBorrar);
-            cargarClientes();
-        } catch (error) {
-
-        }
-    }
 
     return (
         <div className="container">
@@ -74,7 +75,7 @@ const ListadoClientes = () => {
                     <i className="bi bi-plus-square" /> Nuevo cliente</a></h3>
             <form action="">
                 <input type="text" value={criterio} onChange={cambiarCriterio} id="criterio" name="criterio" />
-                <button id="buscar" name="buscar" onClick={buscarClientes} type="editar" class="btn btn-primary mx-3 btn-dark"> Buscar</button>
+                <button id="buscar" name="buscar" onClick={buscarClientes} class="btn btn-primary mx-3 btn-dark"> Buscar</button>
             </form>
 
             <table className="table table-sm">
@@ -90,33 +91,36 @@ const ListadoClientes = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        estado === Estados.CARGANDO ? (
-                            <tr><td colSpan="4">Cargando...</td></tr>
-                        ) :
-                            estado === Estados.VACIO ? (
-                                <tr><td colSpan="4">No hay datos</td></tr>
-                            ) :
-                                estado === Estados.ERROR ? (
-                                    <tr><td colSpan="4">Ocurrió un error, intente más tarde.</td></tr>
-                                ) :
-                                    ListadoClientes.map((cliente) => (
-                                        <tr key={cliente._id}>
-                                            <td>{cliente.nombres}</td>
-                                            <td>{cliente.apellidos}</td>
-                                            <td>{cliente.documento}</td>
-                                            <td>{cliente.telefono}</td>
-                                            <td>{cliente.correo}</td>
-                                            <td>{cliente.usuario}</td>
-                                            <td>{cliente.password}</td>
-                                            <td>
+                    {estado === Estados.CARGANDO ? (
+                        <tr><td>
+                            <div className="spinner-border text-warning" role="status">
+                                <span className="sr-only"></span>
+                            </div>
+                        </td></tr>)
+                        :
+                        estado === Estados.ERROR ?
+                            (<tr><td>Ocurrió un error, intente más tarde</td></tr>)
+                            :
+                            estado === Estados.VACIO ?
+                                (<tr><td>No hay datos</td></tr>)
+                                :
+                                ListadoClientes.map((cliente) => (
+                                    <tr key={cliente._id}>
+                                        <td>{cliente.nombres}</td>
+                                        <td>{cliente.apellidos}</td>
+                                        <td>{cliente.documento}</td>
+                                        <td>{cliente.telefono}</td>
+                                        <td>{cliente.correo}</td>
+                                        <td>{cliente.usuario}</td>
+                                        <td>{cliente.password}</td>
+                                        <td>
                                             <div className="text-end">
-                                                <a href={"/Clientes/Registro/" + cliente._id} type="editar" className="btn btn-sm btn-warning me-2"><i className="bi bi-pencil" /> Editar</a>
-                                                <button onClick={() => {confirmarBorrado(cliente._id, cliente.nombre)}} className="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrar"><i className="bi bi-trash" /> Borrar</button>
+                                                <a className="btn btn-warning me-2" href={"/Clientes/Registro/" + cliente._id}><i className="bi bi-pencil" />Editar</a>
+                                                <button onClick={() => { confirmarBorrado(cliente._id, cliente.nombres + " " + cliente.apellidos) }} className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrado"><i className="bi bi-trash" />Eliminar</button>
                                             </div>
-                                            </td>
-                                        </tr>
-                                    ))
+                                        </td>
+                                    </tr>
+                                ))
                     }
                 </tbody>
 

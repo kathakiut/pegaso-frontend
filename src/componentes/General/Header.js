@@ -15,7 +15,7 @@ function Header() {
                         <li>
                             <div>
                                 <a href="/" className="nav-link text-white" align="center">
-                                    <i class="bi bi-house-door fs-5"></i>
+                                    <i className="bi bi-house-door fs-5"></i>
                                     <div className="lh-lg">Inicio</div>
                                 </a>
                             </div>
@@ -25,14 +25,14 @@ function Header() {
                         <li>
                             <div>
                                 <a href="/Tickets" className="nav-link text-white " align="center">
-                                    <i class="bi bi-window-stack fs-5"></i>
-                                    <div class="fs-0 lh-1">
+                                    <i className="bi bi-window-stack fs-5"></i>
+                                    <div className="fs-0 lh-1">
                                         <li className="nav-item dropdown">
-                                            <a className="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Tickets</a>
-                                            <ul class="dropdown-menu ">
-                                                <li><a className="dropdown-item " href="/tickets/registro">Creación de Tickets</a></li>
+                                            <a className="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="/tickets" role="button" aria-expanded="false">Tickets</a>
+                                            <ul className="dropdown-menu ">
+                                                <li><a className="dropdown-item " href="/tickets/crear">Creación de Tickets</a></li>
                                                 <li><a className="dropdown-item" href="/tickets/listado">Listado Tickets</a></li>
-                                                <li><a className="dropdown-item" href="/tickets">Gestion de Tickets</a></li>
+                                                <li><a className="dropdown-item" href="/tickets/listado">Gestion de Tickets</a></li>
                                             </ul>
                                         </li>
                                     </div>
@@ -43,11 +43,11 @@ function Header() {
                         <li>
                             <div>
                                 <a href="/Clientes" className="nav-link text-white" align="center">
-                                    <i class="bi bi-person-circle fs-5"></i>
-                                    <div class="fs-0 lh-1">
+                                    <i className="bi bi-person-circle fs-5"></i>
+                                    <div className="fs-0 lh-1">
                                         <li className="nav-item dropdown">
-                                            <a className="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Clientes</a>
-                                            <ul class="dropdown-menu ">
+                                            <a className="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="/clientes" role="button" aria-expanded="false">Clientes</a>
+                                            <ul className="dropdown-menu ">
                                                 <li><a className="dropdown-item " href="/clientes/registro">Creación de Clientes</a></li>
                                                 <li><a className="dropdown-item" href="/clientes/listado">Listado de Clientes</a></li>
                                                 <li><a className="dropdown-item" href="/clientes">Gestion de Clientes</a></li>
@@ -61,11 +61,11 @@ function Header() {
                         <li>
                             <div>
                                 <a href="/Tickets" className="nav-link text-white" align="center">
-                                    <i class="bi bi-window-stack fs-5"></i>
-                                    <div class="fs-0 lh-1">
+                                    <i className="bi bi-window-stack fs-5"></i>
+                                    <div className="fs-0 lh-1">
                                         <li className="nav-item dropdown">
                                             <a className="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="/" role="button" aria-expanded="false">Agentes</a>
-                                            <ul class="dropdown-menu ">
+                                            <ul className="dropdown-menu ">
                                                 <li><a className="dropdown-item " href="/agentes/registro">Creación de Agentes</a></li>
                                                 <li><a className="dropdown-item" href="/agentes/listado">Listado de Agentes</a></li>
                                                 <li><a className="dropdown-item" href="/agentes">Gestion de Agentes</a></li>
@@ -77,11 +77,11 @@ function Header() {
 
                         </li>
                         <li>
-                        <a type="button" class="btn btn-outline-warning me-2 " href="/Ingreso" >Ingresar</a>
+                        <a type="button" className="btn btn-outline-warning me-2 " href="/Ingreso" >Ingresar</a>
 
                         </li>
                         <li>
-                        <a type="button" class="btn btn-warning" href="/Clientes/Registro" >Registrarse</a>
+                        <a type="button" className="btn btn-warning" href="/Clientes/Registro" >Registrarse</a>
 
                         </li>
 

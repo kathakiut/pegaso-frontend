@@ -1,6 +1,5 @@
-import TicketsServicios from"../../servicios/TicketsServicios"
-import useState from "react";
-import { useEffect } from "react";
+import TicketsServicios from "../../servicios/TicketsServicios"
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CrearTickets = () => {
@@ -10,7 +9,7 @@ const CrearTickets = () => {
     const [asunto, setAsunto] = useState("");
     const [solicitud, setSolicitud] = useState("");
     const [mensaje, setMensaje] = useState("");
-    const [ titulo, setTitulo ] = useState("");
+    const [titulo, setTitulo] = useState("");
 
     const crearTicket = async (event) => {
 
@@ -43,17 +42,18 @@ const CrearTickets = () => {
                     console.log(respuesta.data);
                     setAsunto(respuesta.data.asunto);
                     setSolicitud(respuesta.data.solicitud);
-                }  
+                }
+                setTitulo("Edición");
             }
             else {
-                setTitulo("Registro");
+                setTitulo("Creación");
             }
         } catch (error) {
             console.log("Ocurrió un error");
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         cargarTicket();
     }, [])
 
@@ -77,30 +77,30 @@ const CrearTickets = () => {
     return (
 
         <div className="container ">
-              <div className="px-5 my-3">
-              <h3>{titulo} de Tickets</h3>
-              </div>
+            <div className="px-5 my-3">
+                <h3>{titulo} de Tickets</h3>
+            </div>
             <form className="container" action=""></form>
-            <div class="row my-4">
+            <div className="row my-4">
             </div>
             <div className="col-4 px-5 my-2">
-                <label htmlFor="asunto" class="form-label"  >Asunto*</label>
-                <input type="asunto" onChange={cambiarAsunto} value={asunto} class="form-control" id="asunto" placeholder="asunto">
+                <label htmlFor="asunto" className="form-label"  >Asunto*</label>
+                <input type="asunto" onChange={cambiarAsunto} value={asunto} className="form-control" id="asunto" placeholder="asunto">
                 </input>
             </div>
             <div className="col-7 px-5 my-3">
-                <label htmlFor="solicitud" class="form-label">Solicitud*</label>
-                <textarea class="form-control" onChange={cambiarSolicitud} value={solicitud} id="solicitud" rows="7">
+                <label htmlFor="solicitud" className="form-label">Solicitud*</label>
+                <textarea className="form-control" onChange={cambiarSolicitud} value={solicitud} id="solicitud" rows="7">
                 </textarea>
             </div>
             <div className="row ">
                 <div className="col-4 px-5">
-                    <label htmlFor="formFile" class="form-label">Adjuntar archivo</label>
+                    <label htmlFor="formFile" className="form-label">Adjuntar archivo</label>
                     <input className="form-control" type="file" id="formFile"></input>
                 </div>
             </div>
-            <div class="px-5">
-                <button  onClick={crearTicket} className="btn btn-outline-primary  my-2 my-sm-2 me-2" type="submit" >Crear Ticket</button>
+            <div className="px-5">
+                <button onClick={crearTicket} className="btn btn-outline-primary  my-2 my-sm-2 me-2" type="submit" >Crear Ticket</button>
                 <button onClick={cancelar} className="btn btn-outline-danger  my-2 my-sm-2" type="cancelar" >Cancelar</button>
                 <div id="mensaje">{mensaje} </div>
             </div>

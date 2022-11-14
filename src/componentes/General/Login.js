@@ -5,12 +5,12 @@ import LoginServicios from "../../servicios/LoginServicios"
 import { ContextoUsuario } from "./ContextoUsuario";
 
 const Login = () => {
-    const navigateTo = useNavigate();    
-    const [ email, setEmail ] = useState("");
+    const navigateTo = useNavigate();
+    const { usuario, setUsuario} = useContext(ContextoUsuario);
     const [ password, setPassword ] = useState("");
     const [ mensaje, setMensaje ] = useState("");
     const [ recordar, setRecordar ] = useState(false);
-    const { usuario, setUsuario} = useContext(ContextoUsuario);
+
 
     const crearSesion = (datosPerfil) => {
         sessionStorage.setItem("nombres", datosPerfil.nombres);
@@ -22,7 +22,7 @@ const Login = () => {
         event.preventDefault();
         try {
             const credenciales = {
-                email: email,
+                usuario: usuario,
                 password: password
             };
             const result = await LoginServicios.login(credenciales);
@@ -45,8 +45,8 @@ const Login = () => {
         }
     }
 
-    const cambiarEmail = (event) => {
-        setEmail(event.target.value);
+    const cambiarUsuario = (event) => {
+        setUsuario(event.target.value);
         setMensaje("");
     }
 
@@ -63,9 +63,9 @@ const Login = () => {
         <form onSubmit={validar} className="card shadow w-100 m-auto" style={{ maxWidth: "600px",  padding: "15px"}}>
             <h3 className="h3 mb-3">Ingresar</h3>
             <div className="row mb-2">
-                <label htmlFor="email" className="form-control-sm col-3">Email</label>
+                <label htmlFor="usuario" className="form-control-sm col-3">Usuario</label>
                 <div className="col-9">
-                    <input type="email" className="form-control form-control-sm col-8" onChange={cambiarEmail} value={email} id="email" name="email" placeholder="nombre@ejemplo.com" required/>
+                    <input type="user" className="form-control form-control-sm col-8" onChange={cambiarUsuario} value={usuario} id="usuario" name="usuario" placeholder="Usuario" required/>
                 </div>
             </div>
             <div className="row mb-2">
