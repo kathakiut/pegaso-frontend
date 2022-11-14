@@ -87,17 +87,17 @@ const ListadoTickets = () => {
                 <tbody>
                     {estado === Estados.CARGANDO ?
                         (<tr><td>
-                            <div className="spinner-border text-primary" role="status">
+                            <div className="spinner-border text-primary" role="status" colSpan="4">
                                 <span className="visually-hidden"></span>
                             </div>
                         </td></tr>
                         )
                         :
                         estado === Estados.ERROR ?
-                            (<div>Ocurrió un Error Intente mas tarde</div>)
+                            (<div colSpan="4">Ocurrió un Error Intente mas tarde</div>)
                             :
                             estado === Estados.VACIO ?
-                                (<div>No hay datos</div>)
+                                (<div colSpan="4">No hay datos</div>)
                                 :
                                 ListadoTickets.map((ticket) => (
                                     <tr key={ticket._id}>

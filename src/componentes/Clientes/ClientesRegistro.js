@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ClientesServicios from "../../servicios/ClientesServicios";
 
@@ -48,10 +48,10 @@ const ClientesRegistro = () => {
         }
     }
 
-    const cargarCliente = async() => {
+    const cargarClientes = async() => {
         if (id!=null) {
             try {
-                const respuesta = await ClientesServicios.cargarCliente(id);
+                const respuesta = await ClientesServicios.cargarClientes(id);
                 if (respuesta.data != null) {
                     setNombres(respuesta.data.nombres);
                     setApellidos(respuesta.data.apellidos);
@@ -78,8 +78,8 @@ const ClientesRegistro = () => {
         }
     }
 
-    useEffect(()=> {
-        cargarCliente();
+    useEffect (() => {
+        cargarClientes();
     }, [])
 
 

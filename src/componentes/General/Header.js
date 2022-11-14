@@ -77,11 +77,11 @@ function Header() {
 
                         </li>
                         <li>
-                        <button type="button" class="btn btn-outline-warning me-2 " href="/Ingreso" >Ingresar</button>
+                        <a type="button" class="btn btn-outline-warning me-2 " href="/Ingreso" >Ingresar</a>
 
                         </li>
                         <li>
-                        <button type="button" class="btn btn-warning" href="/ClientesRegistro" >Registrarse</button>
+                        <a type="button" class="btn btn-warning" href="/Clientes/Registro" >Registrarse</a>
 
                         </li>
 

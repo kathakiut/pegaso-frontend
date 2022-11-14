@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState} from "react";
 import Estados from "../../enums/Estados";
 import ClientesServicios from "../../servicios/ClientesServicios";
 
 const ListadoClientes = () => {
 
-    const [listadoClientes, setListadoClientes] = useState([]);
+    const [ListadoClientes, setListadoClientes] = useState([]);
     const [estado, setEstado] = useState(Estados.CARGANDO);
     const [criterio, setCriterio] = useState("");
     const [idBorrar, setIdBorrar] = useState("");
@@ -45,7 +45,7 @@ const ListadoClientes = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect (() => {
         cargarClientes();
     }, [])
 
@@ -63,17 +63,15 @@ const ListadoClientes = () => {
             await ClientesServicios.borrarCliente(idBorrar);
             cargarClientes();
         } catch (error) {
-            
+
         }
     }
 
-
-    return  (
+    return (
         <div className="container">
-            <h3>Listado de clientes
-                <a className="btn btn-sm btn-primary mx-5 btn-warning" href="/Clientes/Registro">
-                    <i className="bi bi-plus-square" /> Nuevo cliente</a>
-                    </h3>
+            <h3>Lista de clientes
+                <a className="btn btn-sm btn-primary mx-3 btn-warning" href="/Clientes/Registro">
+                    <i className="bi bi-plus-square" /> Nuevo cliente</a></h3>
             <form action="">
                 <input type="text" value={criterio} onChange={cambiarCriterio} id="criterio" name="criterio" />
                 <button id="buscar" name="buscar" onClick={buscarClientes} type="editar" class="btn btn-primary mx-3 btn-dark"> Buscar</button>
@@ -92,37 +90,38 @@ const ListadoClientes = () => {
                     </tr>
                 </thead>
                 <tbody>
-					{
-						estado === Estados.CARGANDO ? (
-							<tr><td colSpan="4">Cargando...</td></tr>
-						) :
-							estado === Estados.VACIO ? (
-								<tr><td colSpan="4">No hay datos</td></tr>
-							) :
-								estado === Estados.ERROR ? (
-									<tr><td colSpan="4">Ocurrió un error, intente más tarde.</td></tr>
-								) :
-									listadoClientes.map((cliente) => (
-										<tr key={cliente._id}>
-                                        <td>{cliente.nombres}</td>
-                                        <td>{cliente.apellidos}</td>
-                                        <td>{cliente.documento}</td>
-                                        <td>{cliente.telefono}</td>
-                                        <td>{cliente.correo}</td>
-                                        <td>{cliente.usuario}</td>
-                                        <td>{cliente.password}</td>
-
-											<td>
-												<a href={"/Clientes/Registro/" + cliente._id} className="btn btn-sm btn-warning me-1"><i className="bi bi-pencil" /> Editar</a>
-												<button onClick={()=>confirmarBorrado(cliente._id, cliente.nombre)} className="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrar"><i className="bi bi-trash" /> Borrar</button>
-											</td>
-										</tr>
-									))
-					}
-				</tbody>
+                    {
+                        estado === Estados.CARGANDO ? (
+                            <tr><td colSpan="4">Cargando...</td></tr>
+                        ) :
+                            estado === Estados.VACIO ? (
+                                <tr><td colSpan="4">No hay datos</td></tr>
+                            ) :
+                                estado === Estados.ERROR ? (
+                                    <tr><td colSpan="4">Ocurrió un error, intente más tarde.</td></tr>
+                                ) :
+                                    ListadoClientes.map((cliente) => (
+                                        <tr key={cliente._id}>
+                                            <td>{cliente.nombres}</td>
+                                            <td>{cliente.apellidos}</td>
+                                            <td>{cliente.documento}</td>
+                                            <td>{cliente.telefono}</td>
+                                            <td>{cliente.correo}</td>
+                                            <td>{cliente.usuario}</td>
+                                            <td>{cliente.password}</td>
+                                            <td>
+                                            <div className="text-end">
+                                                <a href={"/Clientes/Registro/" + cliente._id} type="editar" className="btn btn-sm btn-warning me-2"><i className="bi bi-pencil" /> Editar</a>
+                                                <button onClick={() => {confirmarBorrado(cliente._id, cliente.nombre)}} className="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalBorrar"><i className="bi bi-trash" /> Borrar</button>
+                                            </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                    }
+                </tbody>
 
             </table>
- 
+
             <div className="modal fade" id="modalBorrado" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -137,10 +136,10 @@ const ListadoClientes = () => {
                             <button type="button" className="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                             <button type="button" onClick={borrarCliente} className="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-       </div>
+        </div>
 
     )
 }
